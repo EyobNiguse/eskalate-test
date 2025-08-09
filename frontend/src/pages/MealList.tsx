@@ -10,6 +10,7 @@ const MealList: React.FC = () => {
     const fetchMeals = async () => {
       try {
         const response = await mealApi.getAll({ limit: 20 });
+        console.log(response, "this is the repsonse");
         setMeals(response.data.data);
       } catch (error) {
         console.error("Failed to fetch meals:", error);
