@@ -4,19 +4,21 @@ import { useAuth } from "../contexts/AuthContext";
 import { authApi } from "../services/api";
 
 const Register: React.FC = () => {
-  const [userType, setUserType] = useState<"customer" | "restaurant_owner">("customer");
+  const [userType, setUserType] = useState<"customer" | "restaurant_owner">(
+    "customer"
+  );
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  
+
   // Restaurant owner fields
   const [restaurantName, setRestaurantName] = useState("");
   const [restaurantAddress, setRestaurantAddress] = useState("");
-  
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  
+
   const { login } = useAuth();
   const navigate = useNavigate();
 
@@ -27,7 +29,7 @@ const Register: React.FC = () => {
 
     try {
       let response;
-      
+
       if (userType === "customer") {
         response = await authApi.registerCustomer({
           email,
@@ -45,7 +47,7 @@ const Register: React.FC = () => {
           restaurantAddress,
         });
       }
-      
+
       login(response.data.access_token, response.data.user);
       navigate("/");
     } catch (err: any) {
@@ -65,7 +67,7 @@ const Register: React.FC = () => {
             Create your account
           </h2>
         </div>
-        
+
         <div className="flex justify-center space-x-4">
           <button
             type="button"
@@ -125,7 +127,7 @@ const Register: React.FC = () => {
               value={lastName}
               onChange={(e) => setLastName(e.target.value)}
             />
-            
+
             {userType === "restaurant_owner" && (
               <>
                 <input
