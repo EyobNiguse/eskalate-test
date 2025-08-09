@@ -80,3 +80,59 @@ Authorization: Bearer YOUR_JWT_TOKEN_HERE
 ### Delete my restaurant (requires restaurant owner role)
 DELETE http://localhost:3000/restaurants/my/restaurant
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+## MEAL ENDPOINTS
+
+### Get all meals with pagination and filtering (public)
+GET http://localhost:3000/meals?page=1&limit=10&search=pizza&isAvailable=true&minPrice=10&maxPrice=50&sortBy=price&sortOrder=ASC
+
+### Get meal by ID (public)
+GET http://localhost:3000/meals/1
+
+### Get my restaurant meals (requires restaurant owner role)
+GET http://localhost:3000/meals/my/meals?page=1&limit=10&search=pizza&isAvailable=true
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### Create a new meal (requires restaurant owner role)
+POST http://localhost:3000/meals
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "name": "Margherita Pizza",
+  "description": "Fresh tomatoes, mozzarella cheese, and basil on a crispy crust",
+  "price": 15.99,
+  "isAvailable": true
+}
+
+### Update a meal (requires restaurant owner role)
+PATCH http://localhost:3000/meals/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+Content-Type: application/json
+
+{
+  "name": "Updated Margherita Pizza",
+  "description": "Updated description with premium ingredients",
+  "price": 17.99,
+  "isAvailable": true
+}
+
+### Upload meal image (requires restaurant owner role)
+POST http://localhost:3000/meals/1/upload-image
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="meal-image.jpg"
+Content-Type: image/jpeg
+
+< ./path-to-your-meal-image.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Delete meal image (requires restaurant owner role)
+DELETE http://localhost:3000/meals/1/image
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### Delete a meal (requires restaurant owner role)
+DELETE http://localhost:3000/meals/1
+Authorization: Bearer YOUR_JWT_TOKEN_HERE

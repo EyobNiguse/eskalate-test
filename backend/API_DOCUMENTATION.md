@@ -4,10 +4,13 @@ This API provides JWT-based authentication with role-based access control for a 
 
 ## Swagger Documentation
 
-The API includes interactive Swagger documentation with Bearer token authentication support:
+The API includes comprehensive interactive Swagger documentation with Bearer token authentication support:
 
 - **URL**: `http://localhost:3000/docs`
 - **Authentication**: Click the "Authorize" button and enter your JWT token
+- **File Upload**: Proper file input UI for image uploads with validation info
+- **Detailed Schemas**: Complete request/response examples for all endpoints
+- **Parameter Documentation**: Clear descriptions for all path parameters and request bodies
 
 ## User Roles
 
@@ -389,6 +392,102 @@ The system uses SQLite by default. The database file `database.sqlite` will be c
 - **Upload Directory**: `./uploads/` (created automatically)
 - **File Naming**: UUID + original extension
 - **Access URL**: `/uploads/{filename}`
+
+## Meal Endpoints
+
+### GET /meals
+
+Get all meals with pagination and filtering (public endpoint).
+
+**Query Parameters:**
+
+- `page` (optional): Page number (default: 1)
+- `limit` (optional): Items per page (default: 10, max: 100)
+- `search` (optional): Search in meal name and description
+- `restaurantId` (optional): Filter by restaurant ID
+- `isAvailable` (optional): Filter by availability (true/false)
+- `minPrice` (optional): Minimum price filter
+- `maxPrice` (optional): Maximum price filter
+- `sortBy` (optional): Sort by field (name, price, createdAt, updatedAt)
+- `sortOrder` (optional): Sort order (ASC, DESC)
+
+**Response:**
+
+```json
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "Margherita Pizza",
+      "description": "Fresh tomatoes, mozzarella cheese, and basil",
+      "price": 15.99,
+      "image": "meal-image.jpg",
+      "isAvailable": true,
+      "restaurant": {
+        "id": 1,
+        "name": "Italian Bistro",
+        "address": "123 Main St",
+        "cuisine": "Italian",
+        "profileImage": "restaurant-image.jpg",
+        "owner": {
+          "id": 2,
+          "firstName": "John",
+          "lastName": "Doe"
+        }
+      },
+      "createdAt": "2023-01-01T00:00:00.000Z",
+      "updatedAt": "2023-01-01T00:00:00.000Z"
+    }
+  ],
+  "meta": {
+    "total": 25,
+    "page": 1,
+    "limit": 10,
+    "totalPages": 3,
+    "hasNext": true,
+    "hasPrev": false
+  }
+}
+```
+
+### GET /meals/:id
+
+Get a specific meal by ID (public endpoint).
+
+### GET /meals/my/meals
+
+Get meals from the current user's restaurant with pagination and filtering (requires restaurant owner role).
+
+### POST /meals
+
+Create a new meal (requires restaurant owner role).
+
+**Body:**
+
+```json
+{
+  "name": "Margherita Pizza",
+  "description": "Fresh tomatoes, mozzarella cheese, and basil on a crispy crust",
+  "price": 15.99,
+  "isAvailable": true
+}
+```
+
+### PATCH /meals/:id
+
+Update a meal (requires restaurant owner role).
+
+### POST /meals/:id/upload-image
+
+Upload a meal image (requires restaurant owner role).
+
+### DELETE /meals/:id/image
+
+Delete a meal image (requires restaurant owner role).
+
+### DELETE /meals/:id
+
+Delete a meal (requires restaurant owner role).
 
 ## Getting Started
 

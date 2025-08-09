@@ -5,6 +5,7 @@ import {
     CreateDateColumn,
     UpdateDateColumn,
     OneToOne,
+    OneToMany,
 } from 'typeorm';
 
 @Entity('restaurants')
@@ -32,6 +33,9 @@ export class Restaurant {
 
     @OneToOne('User', 'restaurant')
     owner: any;
+
+    @OneToMany('Meal', 'restaurant')
+    meals: any[];
 
     @CreateDateColumn()
     createdAt: Date;
