@@ -1,3 +1,17 @@
+### Why I Chose This Approach
+
+The focus of this project is to build a **rock-solid backend API**. This means prioritizing:
+
+- **Reliable, well-structured, and maintainable server-side code**
+- **Robust data handling and business logic**
+- **Secure and efficient API endpoints**
+
+By concentrating on the backend, I ensure the core functionality and data integrity are solid and scalable.
+
+For the frontend, I implement **only the minimum necessary features**—such as a simple page listing items and a basic form to add new entries. This lightweight frontend serves mainly as a demonstration of the API's correctness and usability, without diverting time and resources away from perfecting the backend.
+
+This approach keeps the scope manageable, allows for easier testing and validation of the API, and makes future frontend development more flexible and independent.
+
 # JWT Authentication API Documentation
 
 This API provides JWT-based authentication with role-based access control for a restaurant management system, including image upload functionality.
