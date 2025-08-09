@@ -40,10 +40,9 @@ async function bootstrap() {
       'JWT-auth', // This name here is important for later reference
     )
     .build();
-
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, document);  // docs available at /api/docs
 
-  await app.listen(3000);
+  await app.listen(8000);
 }
 bootstrap();
