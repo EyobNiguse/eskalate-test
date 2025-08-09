@@ -1,0 +1,21 @@
+# Backend/Dockerfile
+FROM node:20-alpine
+
+# Set working directory
+WORKDIR /app
+
+# Copy package.json and install dependencies first
+COPY package*.json ./
+RUN npm install
+
+# Copy source code
+COPY . .
+
+# Build the NestJS project
+RUN npm run build
+
+# Expose the port
+EXPOSE 3000
+
+# Run the application
+CMD ["npm", "run", "start"]

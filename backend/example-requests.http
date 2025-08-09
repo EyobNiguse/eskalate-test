@@ -1,0 +1,66 @@
+# JWT Authentication API Example Requests
+# Use this with REST client extensions like REST Client for VS Code
+
+### Register a new customer
+POST http://localhost:3000/auth/register/customer
+Content-Type: application/json
+
+{
+  "email": "customer@example.com",
+  "password": "password123",
+  "firstName": "John",
+  "lastName": "Doe"
+}
+
+### Register a new restaurant owner (automatically creates restaurant)
+POST http://localhost:3000/auth/register/restaurant-owner
+Content-Type: application/json
+
+{
+  "email": "owner@example.com",
+  "password": "password123",
+  "firstName": "Jane",
+  "lastName": "Smith",
+  "restaurantName": "Delicious Bites",
+  "restaurantDescription": "The best Italian food in town",
+  "restaurantAddress": "123 Main Street, City, State 12345",
+  "restaurantPhone": "+1-555-0123",
+  "restaurantCuisine": "Italian"
+}
+
+### Login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "owner@example.com",
+  "password": "password123"
+}
+
+### Get user profile (requires authentication)
+GET http://localhost:3000/auth/profile
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### Update my restaurant (requires restaurant owner role)
+PATCH http://localhost:3000/restaurants/my/restaurant
+Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+{
+  "name": "Updated Restaurant Name",
+  "description": "Updated description with new specialties",
+  "address": "456 New Street, City, State 12345",
+  "phone": "+1-555-9999",
+  "cuisine": "Modern Italian"
+}
+
+### Get all restaurants (public)
+GET http://localhost:3000/restaurants
+
+### Get my restaurant (requires restaurant owner role)
+GET http://localhost:3000/restaurants/my/restaurant
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
+### Delete my restaurant (requires restaurant owner role)
+DELETE http://localhost:3000/restaurants/my/restaurant
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
