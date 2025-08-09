@@ -7,7 +7,6 @@ import {
     OneToOne,
     JoinColumn,
 } from 'typeorm';
-import { Restaurant } from './restaurant.entity';
 
 export enum UserRole {
     CUSTOMER = 'customer',
@@ -39,12 +38,12 @@ export class User {
     })
     role: UserRole;
 
-    @OneToOne(() => Restaurant, (restaurant) => restaurant.owner, {
+    @OneToOne('Restaurant', 'owner', {
         nullable: true,
         cascade: true,
     })
     @JoinColumn()
-    restaurant?: Restaurant | null;
+    restaurant?: any;
 
     @CreateDateColumn()
     createdAt: Date;

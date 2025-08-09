@@ -8,6 +8,9 @@ import { Repository } from 'typeorm';
 import { Restaurant } from '../entities/restaurant.entity';
 import { User } from '../entities/user.entity';
 import { UpdateRestaurantDto } from './dto/restaurant.dto';
+import { UploadService } from '../upload/upload.service';
+import { UserWithRestaurant, RestaurantWithOwner } from '../types/entities';
+import { Multer } from 'multer';
 
 @Injectable()
 export class RestaurantService {
@@ -16,6 +19,7 @@ export class RestaurantService {
         private restaurantRepository: Repository<Restaurant>,
         @InjectRepository(User)
         private userRepository: Repository<User>,
+        private uploadService: UploadService,
     ) { }
 
     async findAll() {
@@ -104,5 +108,59 @@ export class RestaurantService {
         await this.userRepository.save(user);
 
         return { message: 'Restaurant deleted successfully' };
+    }
+
+    async uploadRestaurantImage(ownerId: number, file: Multer.File) {
+        const user = await this.userRepository.findOne({
+            where: { id: ownerId },
+            relations: ['restaurant'],
+        });
+
+        if (!user || !user.restaurant) {
+            throw new NotFoundException('Restaurant not found');
+        }
+
+        // Delete old image if exists
+        if (user.restaurant.profileImage) {
+            this.uploadService.deleteFile(user.restaurant.profileImage);
+        }
+
+        // Save new image
+        const fileName = await this.uploadService.saveFile(file);
+        const imageUrl = this.uploadService.getFileUrl(fileName);
+
+        // Update restaurant with new image
+        await this.restaurantRepository.update(user.restaurant.id, {
+            profileImage: fileName,
+        });
+
+        return {
+            message: 'Restaurant image uploaded successfully',
+            imageUrl,
+            fileName,
+        };
+    }
+
+    async deleteRestaurantImage(ownerId: number) {
+        const user = await this.userRepository.findOne({
+            where: { id: ownerId },
+            relations: ['restaurant'],
+        });
+
+        if (!user || !user.restaurant) {
+            throw new NotFoundException('Restaurant not found');
+        }
+
+        // Delete image file if exists
+        if (user.restaurant.profileImage) {
+            this.uploadService.deleteFile(user.restaurant.profileImage);
+
+            // Remove image reference from database
+            await this.restaurantRepository.update(user.restaurant.id, {
+                profileImage: undefined,
+            });
+        }
+
+        return { message: 'Restaurant image deleted successfully' };
     }
 }

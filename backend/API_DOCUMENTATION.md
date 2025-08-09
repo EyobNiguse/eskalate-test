@@ -1,11 +1,18 @@
 # JWT Authentication API Documentation
 
-This API provides JWT-based authentication with role-based access control for a restaurant management system.
+This API provides JWT-based authentication with role-based access control for a restaurant management system, including image upload functionality.
+
+## Swagger Documentation
+
+The API includes interactive Swagger documentation with Bearer token authentication support:
+
+- **URL**: `http://localhost:3000/docs`
+- **Authentication**: Click the "Authorize" button and enter your JWT token
 
 ## User Roles
 
 - `customer`: Regular users
-- `restaurant_owner`: Can create and manage restaurants
+- `restaurant_owner`: Can create and manage restaurants with image uploads
 - `admin`: Full system access
 
 ## Authentication Endpoints
@@ -77,7 +84,8 @@ Register a new restaurant owner with restaurant details (automatically creates b
       "description": "The best Italian food in town",
       "address": "123 Main Street, City, State 12345",
       "phone": "+1-555-0123",
-      "cuisine": "Italian"
+      "cuisine": "Italian",
+      "profileImage": null
     }
   }
 }
@@ -142,6 +150,28 @@ Authorization: Bearer <jwt_token>
 
 Get all restaurants (public endpoint).
 
+**Response:**
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Delicious Bites",
+    "description": "The best Italian food in town",
+    "address": "123 Main Street, City, State 12345",
+    "phone": "+1-555-0123",
+    "cuisine": "Italian",
+    "profileImage": "unique-filename.jpg",
+    "owner": {
+      "id": 2,
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "email": "owner@example.com"
+    }
+  }
+]
+```
+
 ### GET /restaurants/:id
 
 Get a specific restaurant by ID (public endpoint).
@@ -174,7 +204,61 @@ Authorization: Bearer <jwt_token>
   "description": "Updated description",
   "address": "New address",
   "phone": "New phone",
-  "cuisine": "New cuisine type"
+  "cuisine": "New cuisine type",
+  "profileImage": "optional-image-filename.jpg"
+}
+```
+
+## Image Upload Endpoints
+
+### POST /restaurants/my/restaurant/upload-image
+
+Upload a profile image for the restaurant (requires restaurant owner role).
+
+**Headers:**
+
+```
+Authorization: Bearer <jwt_token>
+Content-Type: multipart/form-data
+```
+
+**Body:**
+
+- Form field name: `file`
+- Accepted formats: JPEG, PNG, WebP
+- Maximum file size: 5MB
+
+**Response:**
+
+```json
+{
+  "message": "Restaurant image uploaded successfully",
+  "imageUrl": "/uploads/unique-filename.jpg",
+  "fileName": "unique-filename.jpg"
+}
+```
+
+**File Validation:**
+
+- Only image files (JPEG, PNG, WebP) are allowed
+- Maximum file size: 5MB
+- Automatic file name generation with UUID
+
+### DELETE /restaurants/my/restaurant/image
+
+Delete the restaurant's profile image (requires restaurant owner role).
+
+**Headers:**
+
+```
+Authorization: Bearer <jwt_token>
+```
+
+**Response:**
+
+```json
+{
+  "message": "Restaurant image deleted successfully"
 }
 ```
 
@@ -187,6 +271,13 @@ Delete the current user's restaurant (requires restaurant owner role).
 ```
 Authorization: Bearer <jwt_token>
 ```
+
+## Static File Serving
+
+Uploaded images are served at:
+
+- **URL Pattern**: `http://localhost:3000/uploads/{filename}`
+- **Example**: `http://localhost:3000/uploads/unique-filename.jpg`
 
 ## DTO Validations
 
@@ -210,6 +301,13 @@ Authorization: Bearer <jwt_token>
 
 - All fields are optional
 - Same validation rules as restaurant creation
+- `profileImage`: Optional string (filename)
+
+### Image Upload Validation
+
+- **File Types**: JPEG (.jpg, .jpeg), PNG (.png), WebP (.webp)
+- **File Size**: Maximum 5MB
+- **File Name**: Automatically generated UUID + original extension
 
 ## Authentication Guards
 
@@ -244,13 +342,35 @@ async restaurantOwnerOnly(@Request() req) {
 }
 ```
 
+### File Upload with Validation
+
+```typescript
+@UseInterceptors(FileInterceptor('file'))
+async uploadImage(
+  @UploadedFile(
+    new ParseFilePipe({
+      validators: [
+        new MaxFileSizeValidator({ maxSize: 5 * 1024 * 1024 }),
+        new FileTypeValidator({ fileType: /(jpg|jpeg|png|webp)$/ }),
+      ],
+    }),
+  )
+  file: Multer.File,
+) {
+  // Handle file upload
+}
+```
+
 ## Key Features
 
 1. **Separate Registration Flows**: Different endpoints for customers and restaurant owners
 2. **Automatic Restaurant Creation**: Restaurant owners register with their restaurant details
 3. **Comprehensive Validation**: Detailed validation messages for all inputs
 4. **Role-based Access Control**: Secure endpoints based on user roles
-5. **Restaurant Management**: Restaurant owners can update and manage their restaurants
+5. **Image Upload System**: Secure file upload with validation and automatic cleanup
+6. **Static File Serving**: Direct access to uploaded images via URL
+7. **Swagger Documentation**: Interactive API documentation with authentication
+8. **File Management**: Automatic old image deletion when uploading new ones
 
 ## Environment Variables
 
@@ -264,9 +384,16 @@ JWT_SECRET=your-super-secret-jwt-key-here
 
 The system uses SQLite by default. The database file `database.sqlite` will be created automatically when you start the application.
 
+## File Storage
+
+- **Upload Directory**: `./uploads/` (created automatically)
+- **File Naming**: UUID + original extension
+- **Access URL**: `/uploads/{filename}`
+
 ## Getting Started
 
 1. Install dependencies: `npm install`
 2. Set environment variables
 3. Start the application: `npm run start:dev`
 4. The API will be available at `http://localhost:3000`
+5. Access Swagger documentation at `http://localhost:3000/docs`

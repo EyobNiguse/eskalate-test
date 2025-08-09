@@ -7,6 +7,7 @@ import { User, UserRole } from '../entities/user.entity';
 import { Restaurant } from '../entities/restaurant.entity';
 import { RegisterCustomerDto, RegisterRestaurantOwnerDto, LoginDto } from './dto/auth.dto';
 import { CreateRestaurantDto, UpdateRestaurantDto } from '../restaurant/dto/restaurant.dto';
+import { UserWithRestaurant } from '../types/entities';
 
 @Injectable()
 export class AuthService {
@@ -18,7 +19,7 @@ export class AuthService {
         private jwtService: JwtService,
     ) { }
 
-    async validateUser(email: string, password: string): Promise<User | null> {
+    async validateUser(email: string, password: string): Promise<UserWithRestaurant | null> {
         const user = await this.userRepository.findOne({
             where: { email },
             relations: ['restaurant'],

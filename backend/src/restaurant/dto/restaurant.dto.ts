@@ -23,6 +23,10 @@ export class CreateRestaurantDto {
     @IsOptional()
     @Length(2, 50, { message: 'Cuisine type must be between 2 and 50 characters' })
     cuisine?: string;
+
+    @IsString()
+    @IsOptional()
+    profileImage?: string;
 }
 
 export class UpdateRestaurantDto {
@@ -50,4 +54,8 @@ export class UpdateRestaurantDto {
     @IsOptional()
     @Length(2, 50, { message: 'Cuisine type must be between 2 and 50 characters' })
     cuisine?: string;
+
+    @IsString()
+    @IsOptional()
+    profileImage?: string;
 }

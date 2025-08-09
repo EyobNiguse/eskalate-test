@@ -61,6 +61,22 @@ GET http://localhost:3000/restaurants
 GET http://localhost:3000/restaurants/my/restaurant
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
+### Upload restaurant profile image (requires restaurant owner role)
+POST http://localhost:3000/restaurants/my/restaurant/upload-image
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="file"; filename="restaurant-image.jpg"
+Content-Type: image/jpeg
+
+< ./path-to-your-image.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+### Delete restaurant profile image (requires restaurant owner role)
+DELETE http://localhost:3000/restaurants/my/restaurant/image
+Authorization: Bearer YOUR_JWT_TOKEN_HERE
+
 ### Delete my restaurant (requires restaurant owner role)
 DELETE http://localhost:3000/restaurants/my/restaurant
 Authorization: Bearer YOUR_JWT_TOKEN_HERE

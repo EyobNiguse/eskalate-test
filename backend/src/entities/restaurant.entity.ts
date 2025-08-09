@@ -6,7 +6,6 @@ import {
     UpdateDateColumn,
     OneToOne,
 } from 'typeorm';
-import { User } from './user.entity';
 
 @Entity('restaurants')
 export class Restaurant {
@@ -28,8 +27,11 @@ export class Restaurant {
     @Column({ nullable: true })
     cuisine?: string;
 
-    @OneToOne(() => User, (user) => user.restaurant)
-    owner: User;
+    @Column({ nullable: true })
+    profileImage?: string;
+
+    @OneToOne('User', 'restaurant')
+    owner: any;
 
     @CreateDateColumn()
     createdAt: Date;
