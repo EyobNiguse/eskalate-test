@@ -2,11 +2,13 @@
 
 This API provides JWT-based authentication with role-based access control for a restaurant management system, including image upload functionality.
 
+**Base URL**: All API endpoints are prefixed with `/api` (e.g., `/api/auth/login`, `/api/meals`)
+
 ## Swagger Documentation
 
 The API includes comprehensive interactive Swagger documentation with Bearer token authentication support:
 
-- **URL**: `http://localhost:3000/docs`
+- **URL**: `http://localhost:3000/api/docs`
 - **Authentication**: Click the "Authorize" button and enter your JWT token
 - **File Upload**: Proper file input UI for image uploads with validation info
 - **Detailed Schemas**: Complete request/response examples for all endpoints
@@ -20,7 +22,7 @@ The API includes comprehensive interactive Swagger documentation with Bearer tok
 
 ## Authentication Endpoints
 
-### POST /auth/register/customer
+### POST /api/auth/register/customer
 
 Register a new customer.
 
@@ -50,7 +52,7 @@ Register a new customer.
 }
 ```
 
-### POST /auth/register/restaurant-owner
+### POST /api/auth/register/restaurant-owner
 
 Register a new restaurant owner with restaurant details (automatically creates both user and restaurant).
 
@@ -94,7 +96,7 @@ Register a new restaurant owner with restaurant details (automatically creates b
 }
 ```
 
-### POST /auth/login
+### POST /api/auth/login
 
 Login with email and password.
 
@@ -123,7 +125,7 @@ Login with email and password.
 }
 ```
 
-### GET /auth/profile
+### GET /api/auth/profile
 
 Get current user's profile (requires authentication).
 
@@ -149,7 +151,7 @@ Authorization: Bearer <jwt_token>
 
 ## Restaurant Endpoints
 
-### GET /restaurants
+### GET /api/restaurants
 
 Get all restaurants (public endpoint).
 
@@ -175,11 +177,11 @@ Get all restaurants (public endpoint).
 ]
 ```
 
-### GET /restaurants/:id
+### GET /api/restaurants/:id
 
 Get a specific restaurant by ID (public endpoint).
 
-### GET /restaurants/my/restaurant
+### GET /api/restaurants/my/restaurant
 
 Get the current user's restaurant (requires restaurant owner role).
 
@@ -189,7 +191,7 @@ Get the current user's restaurant (requires restaurant owner role).
 Authorization: Bearer <jwt_token>
 ```
 
-### PATCH /restaurants/my/restaurant
+### PATCH /api/restaurants/my/restaurant
 
 Update the current user's restaurant (requires restaurant owner role).
 
@@ -214,7 +216,7 @@ Authorization: Bearer <jwt_token>
 
 ## Image Upload Endpoints
 
-### POST /restaurants/my/restaurant/upload-image
+### POST /api/restaurants/my/restaurant/upload-image
 
 Upload a profile image for the restaurant (requires restaurant owner role).
 
@@ -247,7 +249,7 @@ Content-Type: multipart/form-data
 - Maximum file size: 5MB
 - Automatic file name generation with UUID
 
-### DELETE /restaurants/my/restaurant/image
+### DELETE /api/restaurants/my/restaurant/image
 
 Delete the restaurant's profile image (requires restaurant owner role).
 
@@ -265,7 +267,7 @@ Authorization: Bearer <jwt_token>
 }
 ```
 
-### DELETE /restaurants/my/restaurant
+### DELETE /api/restaurants/my/restaurant
 
 Delete the current user's restaurant (requires restaurant owner role).
 
@@ -395,7 +397,7 @@ The system uses SQLite by default. The database file `database.sqlite` will be c
 
 ## Meal Endpoints
 
-### GET /meals
+### GET /api/meals
 
 Get all meals with pagination and filtering (public endpoint).
 
@@ -450,15 +452,15 @@ Get all meals with pagination and filtering (public endpoint).
 }
 ```
 
-### GET /meals/:id
+### GET /api/meals/:id
 
 Get a specific meal by ID (public endpoint).
 
-### GET /meals/my/meals
+### GET /api/meals/my/meals
 
 Get meals from the current user's restaurant with pagination and filtering (requires restaurant owner role).
 
-### POST /meals
+### POST /api/meals
 
 Create a new meal (requires restaurant owner role).
 
@@ -473,19 +475,19 @@ Create a new meal (requires restaurant owner role).
 }
 ```
 
-### PATCH /meals/:id
+### PATCH /api/meals/:id
 
 Update a meal (requires restaurant owner role).
 
-### POST /meals/:id/upload-image
+### POST /api/meals/:id/upload-image
 
 Upload a meal image (requires restaurant owner role).
 
-### DELETE /meals/:id/image
+### DELETE /api/meals/:id/image
 
 Delete a meal image (requires restaurant owner role).
 
-### DELETE /meals/:id
+### DELETE /api/meals/:id
 
 Delete a meal (requires restaurant owner role).
 
@@ -494,5 +496,5 @@ Delete a meal (requires restaurant owner role).
 1. Install dependencies: `npm install`
 2. Set environment variables
 3. Start the application: `npm run start:dev`
-4. The API will be available at `http://localhost:3000`
-5. Access Swagger documentation at `http://localhost:3000/docs`
+4. The API will be available at `http://localhost:3000/api`
+5. Access Swagger documentation at `http://localhost:3000/api/docs`

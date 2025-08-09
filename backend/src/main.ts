@@ -8,6 +8,9 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
+  // Set global prefix for all routes
+  app.setGlobalPrefix('api');
+
   // Enable global validation
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
@@ -39,7 +42,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, document);  // docs available at /api
+  SwaggerModule.setup('docs', app, document);  // docs available at /api/docs
 
   await app.listen(3000);
 }

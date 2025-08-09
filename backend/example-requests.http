@@ -2,7 +2,7 @@
 # Use this with REST client extensions like REST Client for VS Code
 
 ### Register a new customer
-POST http://localhost:3000/auth/register/customer
+POST http://localhost:3000/api/api/auth/register/customer
 Content-Type: application/json
 
 {
@@ -13,7 +13,7 @@ Content-Type: application/json
 }
 
 ### Register a new restaurant owner (automatically creates restaurant)
-POST http://localhost:3000/auth/register/restaurant-owner
+POST http://localhost:3000/api/auth/register/restaurant-owner
 Content-Type: application/json
 
 {
@@ -29,7 +29,7 @@ Content-Type: application/json
 }
 
 ### Login
-POST http://localhost:3000/auth/login
+POST http://localhost:3000/api/auth/login
 Content-Type: application/json
 
 {
@@ -38,11 +38,11 @@ Content-Type: application/json
 }
 
 ### Get user profile (requires authentication)
-GET http://localhost:3000/auth/profile
+GET http://localhost:3000/api/auth/profile
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 ### Update my restaurant (requires restaurant owner role)
-PATCH http://localhost:3000/restaurants/my/restaurant
+PATCH http://localhost:3000/api/restaurants/my/restaurant
 Content-Type: application/json
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
@@ -55,14 +55,14 @@ Authorization: Bearer YOUR_JWT_TOKEN_HERE
 }
 
 ### Get all restaurants (public)
-GET http://localhost:3000/restaurants
+GET http://localhost:3000/api/restaurants
 
 ### Get my restaurant (requires restaurant owner role)
-GET http://localhost:3000/restaurants/my/restaurant
+GET http://localhost:3000/api/restaurants/my/restaurant
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 ### Upload restaurant profile image (requires restaurant owner role)
-POST http://localhost:3000/restaurants/my/restaurant/upload-image
+POST http://localhost:3000/api/restaurants/my/restaurant/upload-image
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
@@ -74,27 +74,27 @@ Content-Type: image/jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ### Delete restaurant profile image (requires restaurant owner role)
-DELETE http://localhost:3000/restaurants/my/restaurant/image
+DELETE http://localhost:3000/api/restaurants/my/restaurant/image
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 ### Delete my restaurant (requires restaurant owner role)
-DELETE http://localhost:3000/restaurants/my/restaurant
+DELETE http://localhost:3000/api/restaurants/my/restaurant
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 ## MEAL ENDPOINTS
 
 ### Get all meals with pagination and filtering (public)
-GET http://localhost:3000/meals?page=1&limit=10&search=pizza&isAvailable=true&minPrice=10&maxPrice=50&sortBy=price&sortOrder=ASC
+GET http://localhost:3000/api/meals?page=1&limit=10&search=pizza&isAvailable=true&minPrice=10&maxPrice=50&sortBy=price&sortOrder=ASC
 
 ### Get meal by ID (public)
-GET http://localhost:3000/meals/1
+GET http://localhost:3000/api/meals/1
 
 ### Get my restaurant meals (requires restaurant owner role)
-GET http://localhost:3000/meals/my/meals?page=1&limit=10&search=pizza&isAvailable=true
+GET http://localhost:3000/api/meals/my/meals?page=1&limit=10&search=pizza&isAvailable=true
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 ### Create a new meal (requires restaurant owner role)
-POST http://localhost:3000/meals
+POST http://localhost:3000/api/meals
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 Content-Type: application/json
 
@@ -106,7 +106,7 @@ Content-Type: application/json
 }
 
 ### Update a meal (requires restaurant owner role)
-PATCH http://localhost:3000/meals/1
+PATCH http://localhost:3000/api/meals/1
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 Content-Type: application/json
 
@@ -118,7 +118,7 @@ Content-Type: application/json
 }
 
 ### Upload meal image (requires restaurant owner role)
-POST http://localhost:3000/meals/1/upload-image
+POST http://localhost:3000/api/meals/1/upload-image
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
 
@@ -130,9 +130,9 @@ Content-Type: image/jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ### Delete meal image (requires restaurant owner role)
-DELETE http://localhost:3000/meals/1/image
+DELETE http://localhost:3000/api/meals/1/image
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
 
 ### Delete a meal (requires restaurant owner role)
-DELETE http://localhost:3000/meals/1
+DELETE http://localhost:3000/api/meals/1
 Authorization: Bearer YOUR_JWT_TOKEN_HERE
